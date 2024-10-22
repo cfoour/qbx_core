@@ -5,16 +5,17 @@ local characterDataTables = require 'config.server'.characterDataTables
 ---@return boolean success
 ---@return ErrorResult? errorResult
 local function insertBan(request)
-    if not request.discordId and not request.ip and not request.license then
+    if not request.discordId and not request.ip and not request.license and not request.steam then
         return false, {
             code = 'no_identifier',
-            message = 'discordId, ip, or license required in the ban request'
+            message = 'discordId, ip, license, or steam required in the ban request'
         }
     end
 
-    MySQL.insert.await('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
+    MySQL.insert.await('INSERT INTO bans (name, license, steam, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
         request.name,
         request.license,
+        request.steam,
         request.discordId,
         request.ip,
         request.reason,
@@ -24,12 +25,15 @@ local function insertBan(request)
     return true
 end
 
+
 ---@param request GetBanRequest
 ---@return string column in storage
 ---@return string value of the id
 local function getBanId(request)
     if request.license then
         return 'license', request.license
+    elseif request.steam then
+        return 'steam', request.steam
     elseif request.discordId then
         return 'discord', request.discordId
     elseif request.ip then

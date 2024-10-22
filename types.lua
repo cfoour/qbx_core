@@ -104,6 +104,7 @@
 ---@class InsertBanRequest
 ---@field name string
 ---@field license? string
+---@field steam? string
 ---@field discordId? string
 ---@field ip? string
 ---@field reason string
@@ -112,6 +113,7 @@
 
 ---@class GetBanRequest
 ---@field license? string
+---@field steam? string
 ---@field discordId? string
 ---@field ip? string
 

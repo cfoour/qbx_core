@@ -2,21 +2,216 @@ return {
     statusIntervalSeconds = 5, -- how often to check hunger/thirst status to remove health if 0.
     loadingModelsTimeout = 10000, -- Waiting time for ox_lib to load the models before throws an error, for low specs pc
 
-    pauseMapText = 'Powered by Qbox', -- Text shown above the map when ESC is pressed. If left empty 'FiveM' will appear
+    pauseMapText = '', -- Text shown above the map when ESC is pressed. If left empty 'FiveM' will appear
 
     characters = {
-        useExternalCharacters = false, -- Whether you have an external character management resource. (If true, disables the character management inside the core)
-        enableDeleteButton = true, -- Whether players should be able to delete characters themselves.
-        startingApartment = true, -- If set to false, skips apartment choice in the beginning (requires qbx_spawn if true)
+        useExternalCharacters = true, -- Whether you have an external character management resource. (If true, disables the character management inside the core)
+        enableDeleteButton = false, -- Whether players should be able to delete characters themselves.
+        startingApartment = false, -- If set to false, skips apartment choice in the beginning (requires qbx_spawn if true)
 
         dateFormat = 'YYYY-MM-DD',
         dateMin = '1900-01-01', -- Has to be in the same format as the dateFormat config
         dateMax = '2006-12-31', -- Has to be in the same format as the dateFormat config
 
-        limitNationalities = true, -- Setting this to false will allow people to enter whatever they want in the nationality field (To edit the list of nationalities, head to data/nationalities.lua)
+        limitNationalities = true, -- Setting this to false will allow people to enter whatever they want in the nationality field
+        nationalities = {
+            'Afghan',
+            'Albanian',
+            'Algerian',
+            'American',
+            'Andorran',
+            'Angolan',
+            'Antiguans',
+            'Argentinean',
+            'Armenian',
+            'Australian',
+            'Austrian',
+            'Azerbaijani',
+            'Bahamian',
+            'Bahraini',
+            'Bangladeshi',
+            'Barbadian',
+            'Barbudans',
+            'Belarusian',
+            'Belgian',
+            'Belizean',
+            'Beninese',
+            'Bhutanese',
+            'Bolivian',
+            'Bosnian',
+            'Brazilian',
+            'British',
+            'Bruneian',
+            'Bulgarian',
+            'Burkinabe',
+            'Burmese',
+            'Burundian',
+            'Cambodian',
+            'Cameroonian',
+            'Canadian',
+            'Cape Verdean',
+            'Central African',
+            'Chadian',
+            'Chilean',
+            'Chinese',
+            'Colombian',
+            'Comoran',
+            'Congolese',
+            'Costa Rican',
+            'Croatian',
+            'Cuban',
+            'Cypriot',
+            'Czech',
+            'Danish',
+            'Djibouti',
+            'Dominican',
+            'Dutch',
+            'East Timorese',
+            'Ecuadorean',
+            'Egyptian',
+            'Emirian',
+            'Equatorial Guinean',
+            'Eritrean',
+            'Estonian',
+            'Ethiopian',
+            'Fijian',
+            'Filipino',
+            'Finnish',
+            'French',
+            'Gabonese',
+            'Gambian',
+            'Georgian',
+            'German',
+            'Ghanaian',
+            'Greek',
+            'Grenadian',
+            'Guatemalan',
+            'Guinea-Bissauan',
+            'Guinean',
+            'Guyanese',
+            'Haitian',
+            'Herzegovinian',
+            'Honduran',
+            'Hungarian',
+            'I-Kiribati',
+            'Icelander',
+            'Indian',
+            'Indonesian',
+            'Iranian',
+            'Iraqi',
+            'Irish',
+            'Israeli',
+            'Italian',
+            'Ivorian',
+            'Jamaican',
+            'Japanese',
+            'Jordanian',
+            'Kazakhstani',
+            'Kenyan',
+            'Kittian and Nevisian',
+            'Kuwaiti',
+            'Kyrgyz',
+            'Laotian',
+            'Latvian',
+            'Lebanese',
+            'Liberian',
+            'Libyan',
+            'Liechtensteiner',
+            'Lithuanian',
+            'Luxembourger',
+            'Macedonian',
+            'Malagasy',
+            'Malawian',
+            'Malaysian',
+            'Maldivan',
+            'Malian',
+            'Maltese',
+            'Marshallese',
+            'Mauritanian',
+            'Mauritian',
+            'Mexican',
+            'Micronesian',
+            'Moldovan',
+            'Monacan',
+            'Mongolian',
+            'Moroccan',
+            'Mosotho',
+            'Motswana',
+            'Mozambican',
+            'Namibian',
+            'Nauruan',
+            'Nepalese',
+            'New Zealander',
+            'Nicaraguan',
+            'Nigerian',
+            'Nigerien',
+            'North Korean',
+            'Northern Irish',
+            'Norwegian',
+            'Omani',
+            'Pakistani',
+            'Palauan',
+            'Panamanian',
+            'Papua New Guinean',
+            'Paraguayan',
+            'Peruvian',
+            'Polish',
+            'Portuguese',
+            'Qatari',
+            'Romanian',
+            'Russian',
+            'Rwandan',
+            'Saint Lucian',
+            'Salvadoran',
+            'Samoan',
+            'San Marinese',
+            'Sao Tomean',
+            'Saudi',
+            'Scottish',
+            'Senegalese',
+            'Serbian',
+            'Seychellois',
+            'Sierra Leonean',
+            'Singaporean',
+            'Slovakian',
+            'Slovenian',
+            'Solomon Islander',
+            'Somali',
+            'South African',
+            'South Korean',
+            'Spanish',
+            'Sri Lankan',
+            'Sudanese',
+            'Surinamer',
+            'Swazi',
+            'Swedish',
+            'Swiss',
+            'Syrian',
+            'Taiwanese',
+            'Tajik',
+            'Tanzanian',
+            'Thai',
+            'Togolese',
+            'Tongan',
+            'Trinbagonian',
+            'Tunisian',
+            'Turkish',
+            'Tuvaluan',
+            'Ugandan',
+            'Ukrainian',
+            'Uruguayan',
+            'Uzbekistani',
+            'Venezuelan',
+            'Vietnamese',
+            'Wallisian',
+            'Welsh',
+            'Yemenite',
+            'Zambian',
+            'Zimbabwean'
+        },
 
         profanityWords = {
-            ['bad word'] = true
+            ['admin'] = true
         },
 
         locations = { -- Spawn locations for multichar, these are chosen randomly
@@ -43,12 +238,9 @@ return {
             {
                 pedCoords = vec4(2265.27, 2925.02, -84.8, 267.77),
                 camCoords = vec4(2268.24, 2925.02, -84.36, 90.88),
-            },
-            {
-                pedCoords = vec4(-1004.5, -478.51, 50.03, 28.19),
-                camCoords = vec4(-1006.36, -476.19, 50.50, 210.38),
             }
         },
+
     },
 
     discord = {
@@ -57,28 +249,28 @@ return {
         appId = '', -- This is the Application ID (Replace this with you own)
 
         largeIcon = { -- To set this up, visit https://forum.cfx.re/t/how-to-updated-discord-rich-presence-custom-image/157686
-            icon = 'logo_name', -- Here you will have to put the image name for the 'large' icon.
-            text = 'This is a large icon with text', -- Here you can add hover text for the 'large' icon.
+            icon = 'logo', -- Here you will have to put the image name for the 'large' icon.
+            text = 'Switch RP', -- Here you can add hover text for the 'large' icon.
         },
 
         smallIcon = {
-            icon = 'logo_name', -- Here you will have to put the image name for the 'small' icon.
-            text = 'This is a small icon with text', -- Here you can add hover text for the 'small' icon.
+            icon = 'logo', -- Here you will have to put the image name for the 'small' icon.
+            text = 'Switch RolePlay', -- Here you can add hover text for the 'small' icon.
         },
 
         firstButton = {
-            text = 'First Button!',
+            text = 'fiveM',
             link = 'fivem://connect/localhost:30120',
         },
 
         secondButton = {
-            text = 'Second Button!',
-            link = 'fivem://connect/localhost:30120',
+            text = 'Discord',
+            link = 'https://discord.gg/ykp3BjuRkM',
         }
     },
 
     --- Only used by QB bridge
     hasKeys = function(plate, vehicle)
-        return exports.qbx_vehiclekeys:HasKeys(vehicle)
+        return exports['Renewed-Vehiclekeys']:hasKey(plate)
     end,
 }

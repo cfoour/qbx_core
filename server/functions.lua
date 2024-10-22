@@ -342,7 +342,9 @@ exports('ToggleOptin', ToggleOptin)
 function IsPlayerBanned(source)
     local license = GetPlayerIdentifierByType(source --[[@as string]], 'license')
     local license2 = GetPlayerIdentifierByType(source --[[@as string]], 'license2')
-    local result = license2 and storage.fetchBan({ license = license2 })
+    local steam = GetPlayerIdentifierByType(source --[[@as string]], 'steam')
+
+    local result = license2 and storage.fetchBan({ license = license2  or steam })
 
     if not result then
         result = storage.fetchBan({ license = license })

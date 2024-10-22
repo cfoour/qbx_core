@@ -32,21 +32,45 @@ AddEventHandler('playerJoining', function()
     end
 end)
 
+---@param src string
+---@param idType string
+---@return string
+local function getIdentifier(src, idType)
+    local identifier = GetPlayerIdentifierByType(src, idType) or 'unknown'
+    return identifier:gsub(idType .. ':', '') or identifier
+end
+
+---@param src string
+---@return string
+local function userInformation(src)
+    local information = string.format("### 👤 User Information\n**[id]: **%s\n**[name]: **%s\n**[discord]: **%s\n**[steam]: **%s\n**[license]: **%s\n**[license2]: **%s\n",
+        tostring(src),
+        GetPlayerName(src),
+        getIdentifier(src, 'discord'),
+        getIdentifier(src, 'steam'),
+        getIdentifier(src, 'license'),
+        getIdentifier(src, 'license2')
+    )
+    return information
+end
+
 ---@param reason string
 AddEventHandler('playerDropped', function(reason)
     local src = source --[[@as string]]
-    local license = GetPlayerIdentifierByType(src, 'license2') or GetPlayerIdentifierByType(src, 'license')
+    local license = GetPlayerIdentifierByType(src, 'license2') or getIdentifier(src, 'license')
+
     if license then usedLicenses[license] = nil end
     if not QBX.Players[src] then return end
     GlobalState.PlayerCount -= 1
     local player = QBX.Players[src]
+    local citizenId = player.PlayerData.citizenid
     player.PlayerData.lastLoggedOut = os.time()
     logger.log({
         source = 'qbx_core',
         webhook = loggingConfig.webhook['joinleave'],
-        event = 'Dropped',
+        event = 'Player Left',
         color = 'red',
-        message = ('**%s** (%s) left...\n **Reason:** %s'):format(GetPlayerName(src), player.PlayerData.license, reason),
+        message = ('**%s** \n### 💬 Message \n ### User has left the server | CitizenID: %s \n**Reason:** %s'):format(userInformation(src), citizenId, reason),
     })
     player.Functions.Save()
     QBX.Player_Buckets[player.PlayerData.license] = nil
@@ -60,6 +84,7 @@ end)
 local function onPlayerConnecting(name, _, deferrals)
     local src = source --[[@as string]]
     local license = GetPlayerIdentifierByType(src, 'license2') or GetPlayerIdentifierByType(src, 'license')
+    local steamId = GetPlayerIdentifierByType(src, 'steam') or 'unknown'
     deferrals.defer()
 
     -- Mandatory wait
@@ -76,6 +101,12 @@ local function onPlayerConnecting(name, _, deferrals)
     elseif serverConfig.checkDuplicateLicense and usedLicenses[license] then
         deferrals.done(locale('error.duplicate_license'))
     end
+
+    -- if not steamId then
+    --     deferrals.done(locale('error.no_valid_steamid'))
+    -- elseif serverConfig.checkDuplicateLicense and usedLicenses[steamId] then
+    --     deferrals.done(locale('error.duplicate_steamid'))
+    -- end
 
     local databaseTime = os.clock()
     local databasePromise = promise.new()

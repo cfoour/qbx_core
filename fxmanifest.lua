@@ -1,6 +1,7 @@
 fx_version 'cerulean'
 game 'gta5'
 
+
 name 'qbx_core'
 description 'The core resource for the Qbox Framework'
 repository 'https://github.com/Qbox-project/qbx_core'
@@ -43,7 +44,6 @@ server_scripts {
 
 files {
     'modules/*.lua',
-    'data/*.lua',
     'shared/gangs.lua',
     'shared/items.lua',
     'shared/jobs.lua',

@@ -67,7 +67,7 @@ function functions.UseItem(source, item) -- luacheck: ignore
     assert(GetResourceState('qb-inventory') ~= 'started', 'qb-inventory is not compatible with qbx_core. use ox_inventory instead')
 end
 
-local discordLink = GetConvar('qbx:discordlink', 'discord.gg/qbox')
+local discordLink = GetConvar('qbx:discordlink', 'discord.gg/ykp3BjuRkM')
 ---@deprecated use setKickReason or deferrals for connecting players, and the DropPlayer native directly otherwise
 functions.Kick = function(source, reason, setKickReason, deferrals)
     reason = ('\n %s \n 🔸 Check our Discord for further information: %s'):format(reason, discordLink)

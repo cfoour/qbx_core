@@ -459,7 +459,17 @@ function CheckPlayerData(source, playerData)
         playerState:set('thirst', playerData.metadata.thirst, true)
         playerState:set('stress', playerData.metadata.stress, true)
     end
-
+    playerData.metadata.pdcerts = playerData.metadata.pdcerts or {
+        airone = false,                      -- Air-1
+        MumbleAddVoiceChannelListen = false, -- Motorbike Unit
+        fto = false,                         -- Field Training Officer
+        hsu = false,                         -- High Speed Unit
+        classthree = false,                  -- Class 3
+        classtwo = false,                    -- Class 2
+        alr = false,                         -- Armalite Rifle
+        canine = false,                      -- Canine
+        swat = false                         -- SWAT
+    }
     playerData.metadata.isdead = playerData.metadata.isdead or false
     playerData.metadata.inlaststand = playerData.metadata.inlaststand or false
     playerData.metadata.armor = playerData.metadata.armor or 0
@@ -470,15 +480,15 @@ function CheckPlayerData(source, playerData)
     playerData.metadata.status = playerData.metadata.status or {}
     playerData.metadata.phone = playerData.metadata.phone or {}
     playerData.metadata.bloodtype = playerData.metadata.bloodtype or config.player.bloodTypes[math.random(1, #config.player.bloodTypes)]
-    playerData.metadata.dealerrep = playerData.metadata.dealerrep or 0
-    playerData.metadata.craftingrep = playerData.metadata.craftingrep or 0
-    playerData.metadata.attachmentcraftingrep = playerData.metadata.attachmentcraftingrep or 0
+    --playerData.metadata.dealerrep = playerData.metadata.dealerrep or 0
+    --playerData.metadata.craftingrep = playerData.metadata.craftingrep or 0
+    --playerData.metadata.attachmentcraftingrep = playerData.metadata.attachmentcraftingrep or 0
     playerData.metadata.currentapartment = playerData.metadata.currentapartment or nil
-    playerData.metadata.jobrep = playerData.metadata.jobrep or {}
-    playerData.metadata.jobrep.tow = playerData.metadata.jobrep.tow or 0
-    playerData.metadata.jobrep.trucker = playerData.metadata.jobrep.trucker or 0
-    playerData.metadata.jobrep.taxi = playerData.metadata.jobrep.taxi or 0
-    playerData.metadata.jobrep.hotdog = playerData.metadata.jobrep.hotdog or 0
+    --playerData.metadata.jobrep = playerData.metadata.jobrep or {}
+    --playerData.metadata.jobrep.tow = playerData.metadata.jobrep.tow or 0
+    --playerData.metadata.jobrep.trucker = playerData.metadata.jobrep.trucker or 0
+    --playerData.metadata.jobrep.taxi = playerData.metadata.jobrep.taxi or 0
+    --playerData.metadata.jobrep.hotdog = playerData.metadata.jobrep.hotdog or 0
     playerData.metadata.callsign = playerData.metadata.callsign or 'NO CALLSIGN'
     playerData.metadata.fingerprint = playerData.metadata.fingerprint or GenerateUniqueIdentifier('FingerId')
     playerData.metadata.walletid = playerData.metadata.walletid or GenerateUniqueIdentifier('WalletId')
@@ -490,6 +500,7 @@ function CheckPlayerData(source, playerData)
         id = true,
         driver = true,
         weapon = false,
+        hunting = false,
     }
     playerData.metadata.inside = playerData.metadata.inside or {
         house = nil,
@@ -664,7 +675,7 @@ function CreatePlayer(playerData, Offline)
         self.Functions.UpdatePlayerData()
     end
 
-    ---@param meta string
+ ---@param meta string
     ---@param val any
     function self.Functions.SetMetaData(meta, val)
         if not meta or type(meta) ~= 'string' then return end
@@ -749,7 +760,16 @@ function CreatePlayer(playerData, Offline)
                 event = 'AddMoney',
                 color = 'lightgreen',
                 tags = tags,
-                message = ('**%s (citizenid: %s | id: %s)** $%s (%s) added, new %s balance: $%s reason: %s'):format(GetPlayerName(self.PlayerData.source), self.PlayerData.citizenid, self.PlayerData.source, amount, moneytype, moneytype, self.PlayerData.money[moneytype], reason),
+                message = ('### 👤 **[%s]** \n - [id]: **%s** \n - [citizenid]: **%s** \n - [money added]: **$%s** \n - [type]: **%s** \n - [new %s balance]: **$%s** \n - [reason]: **%s**'):format(
+                    GetPlayerName(self.PlayerData.source),
+                    self.PlayerData.source,
+                    self.PlayerData.citizenid,
+                    amount,
+                    moneytype,
+                    moneytype,
+                    self.PlayerData.money[moneytype],
+                    reason
+                ),
                 --oxLibTags = ('script:%s,playerName:%s,citizenId:%s,playerSource:%s,amount:%s,moneyType:%s,newBalance:%s,reason:%s'):format(resource, GetPlayerName(self.PlayerData.source), self.PlayerData.citizenid, self.PlayerData.source, amount, moneytype, self.PlayerData.money[moneytype], reason)
             })
             emitMoneyEvents(moneytype, amount, 'add', false, reason)
@@ -786,8 +806,16 @@ function CreatePlayer(playerData, Offline)
                 event = 'RemoveMoney',
                 color = 'red',
                 tags = tags,
-                message = ('** %s (citizenid: %s | id: %s)** $%s (%s) removed, new %s balance: $%s reason: %s'):format(GetPlayerName(self.PlayerData.source), self.PlayerData.citizenid, self.PlayerData.source, amount, moneytype, moneytype, self.PlayerData.money[moneytype], reason),
-                --oxLibTags = ('script:%s,playerName:%s,citizenId:%s,playerSource:%s,amount:%s,moneyType:%s,newBalance:%s,reason:%s'):format(resource, GetPlayerName(self.PlayerData.source), self.PlayerData.citizenid, self.PlayerData.source, amount, moneytype, self.PlayerData.money[moneytype], reason)
+                message = ('### 👤 **[%s]**  \n - [id]: **%s** \n - [citizenid]: **%s** \n - [money removed]: **$%s** \n - [type]: **%s** \n - [new %s balance]: **$%s** \n - [reason]: **%s**'):format(
+                    GetPlayerName(self.PlayerData.source),
+                    self.PlayerData.source,
+                    self.PlayerData.citizenid,
+                    amount,
+                    moneytype,
+                    moneytype,
+                    self.PlayerData.money[moneytype],
+                    reason
+                ),
             })
             emitMoneyEvents(moneytype, amount, 'remove', true, reason)
         end
@@ -819,8 +847,17 @@ function CreatePlayer(playerData, Offline)
                 event = 'SetMoney',
                 color = difference < 0 and 'red' or 'green',
                 tags = tags,
-                message = ('**%s (citizenid: %s | id: %s)** $%s (%s) %s, new %s balance: $%s reason: %s'):format(GetPlayerName(self.PlayerData.source), self.PlayerData.citizenid, self.PlayerData.source, absDifference, moneytype, dirChange, moneytype, self.PlayerData.money[moneytype], reason),
-                --oxLibTags = ('script:%s,playerName:%s,citizenId:%s,playerSource:%s,amount:%s,moneyType:%s,newBalance:%s,reason:%s,direction:%s'):format(resource, GetPlayerName(self.PlayerData.source), self.PlayerData.citizenid, self.PlayerData.source, absDifference, moneytype, self.PlayerData.money[moneytype], reason, dirChange)
+                message = ('### 👤 **[%s]** \n - [id]: **%s** \n - [citizenid]: **%s** \n - [money %s]: **$%s** \n - [type]: **%s** \n - [new %s balance]: **$%s** \n - [reason]: **%s**'):format(
+                    GetPlayerName(self.PlayerData.source),
+                    self.PlayerData.source,
+                    self.PlayerData.citizenid,
+                    dirChange,
+                    absDifference,
+                    moneytype,
+                    moneytype,
+                    self.PlayerData.money[moneytype],
+                    reason
+                ),
             })
             emitMoneyEvents(moneytype, absDifference, 'set', difference < 0, reason)
         end
@@ -1108,7 +1145,7 @@ function ForceDeleteCharacter(citizenid)
                     webhook = config.logging.webhook['joinleave'],
                     event = 'Character Force Deleted',
                     color = 'red',
-                    message = ('Character **%s** got deleted'):format(citizenid),
+                    message = ('Character *[*%s]** got deleted'):format(citizenid),
                 })
             end
         end)
