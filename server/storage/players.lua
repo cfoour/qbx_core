@@ -116,7 +116,7 @@ end
 local function fetchPlayerEntity(citizenId)
     ---@type PlayerEntityDatabase
     local player = MySQL.single.await('SELECT citizenid, license, name, charinfo, money, job, gang, position, metadata, UNIX_TIMESTAMP(last_logged_out) AS lastLoggedOutUnix FROM players WHERE citizenid = ?', { citizenId })
-    local charinfo = json.decode(player.charinfo)
+    local charinfo = player and json.decode(player.charinfo)
     return player and {
         citizenid = player.citizenid,
         license = player.license,
@@ -170,7 +170,7 @@ local function handleSearchFilters(filters)
             end
         end
     end
-    return string.format(' WHERE %s', table.concat(clauses, ' AND ')), holders
+    return (' WHERE %s'):format(table.concat(clauses, ' AND ')), holders
 end
 
 ---@param filters table <string, any>
